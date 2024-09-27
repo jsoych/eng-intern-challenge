@@ -46,8 +46,9 @@ braille_numbers = [
     '.OOO..'    # 0
 ]
 
-# Checks if text is braille
 def is_braille(text):
+    """ Checks if text is braille. """
+
     # Check each character in text
     for c in text:
         if not(c in {'O','.'}):
@@ -60,10 +61,12 @@ def is_braille(text):
     return False
 
 def braille_to_text(braille):
+    """ Translates braille to text. """
+
     # Make braille to alphabet lookup table
     alphabet_table = dict(zip(braille_alphabet,alphabet))
 
-    # Add space character to table
+    # Add space character to alphabet table
     alphabet_table['......'] = ' '
 
     # Make braille to numbers lookup table
@@ -109,6 +112,8 @@ def braille_to_text(braille):
     return ''.join(output_text)
 
 def text_to_braille(text):
+    """ Translate text to braille. """
+
     # Make braille lookup table
     lookup_table = dict(zip(alphabet,braille_alphabet))
 
@@ -161,8 +166,10 @@ def text_to_braille(text):
     # Print translation
     return ''.join(output_braille)
 
-# Translate and print commandline arguments
+# Get commandline arguments
 args = ' '.join(sys.argv[1:])
+
+# Translate and print commandline arguments
 if is_braille(args):
     print(braille_to_text(args))
 else:
