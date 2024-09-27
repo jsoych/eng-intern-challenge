@@ -84,27 +84,33 @@ def braille_to_text(braille):
         # Braille character
         b = braille[i:i+6]
 
+        # Check if b is a space
+        if (b == '......'):
+            output_text.append(alphabet_table[b])
+            num_flag = False
+
         # Check if the following character is a capital
-        if (b == '.....O'):
+        elif (b == '.....O'):
             cap_flag = True
-            continue
 
         # Check if the following character is a decimal
-        if (b == '.O...O'):
+        elif (b == '.O...O'):
             num_flag = True
-            continue
         
         # Check if the following character is a number
-        if (b == '.O.OOO'):
+        elif (b == '.O.OOO'):
             num_flag = True
-            continue
         
-        if (cap_flag):
+        # Check cap_flag
+        elif (cap_flag):
             output_text.append(alphabet_table[b].capitalize())
             cap_flag = False
             num_flag = False
+        
+        # Check num_flag
         elif (num_flag):
             output_text.append(numbers_table[b])
+        
         else:
             output_text.append(alphabet_table[b])
             num_flag = False
@@ -114,7 +120,7 @@ def braille_to_text(braille):
 def text_to_braille(text):
     """ Translate text to braille. """
 
-    # Make braille lookup table
+    # Make text to braille lookup table
     lookup_table = dict(zip(alphabet,braille_alphabet))
 
     # Add numbers to table
@@ -133,10 +139,9 @@ def text_to_braille(text):
             output_braille.append('......')
             num_flag = False
             deci_flag = False
-            continue
 
         # Check if c is a number
-        if c.isnumeric():
+        elif c.isnumeric():
             # Check if c is the first number
             if not(num_flag):
                 output_braille.append('.O.OOO')
@@ -149,21 +154,27 @@ def text_to_braille(text):
                 output_braille.append('.O...O')
                 output_braille.append(deci)
                 deci_flag = False
+            
+            # Add number to output
+            output_braille.append(lookup_table[c])
 
         # Check if c is (possibly) a decimal
         elif (c == '.' and num_flag):
+            output_braille.append(lookup_table[c])
             deci_flag = True
         
-        else:
-            num_flag = False
-        
         # Check if c is uppercase
-        if c.isupper():
+        elif c.isupper():
             output_braille.append('.....O')
+            output_braille.append(lookup_table[c.lower()])
+            num_flag = False
+            deci_flag = False
         
-        output_braille.append(lookup_table[c.lower()])
+        else:
+            output_braille.append(lookup_table[c])
+            num_flag = False
+            deci_flag = False
 
-    # Print translation
     return ''.join(output_braille)
 
 # Get commandline arguments
