@@ -66,14 +66,18 @@ def braille_to_text(braille):
     # Make braille to alphabet lookup table
     alphabet_table = dict(zip(braille_alphabet,alphabet))
 
-    # Add space character to alphabet table
+    # Add space and period character to alphabet table
     alphabet_table['......'] = ' '
+    alphabet_table['..OO.O'] = '.'
 
     # Make braille to numbers lookup table
     numbers_table = dict(zip(braille_numbers,numbers))
 
     # Add decimal to numbers table
     numbers_table['..OO.O'] = '.'
+
+    # Define is_numeric helper function
+    is_numeric = lambda k: k in numbers_table.keys()
 
     # Translate braille to text
     n = len(braille)
@@ -108,7 +112,7 @@ def braille_to_text(braille):
             num_flag = False
         
         # Check num_flag
-        elif (num_flag):
+        elif (num_flag and is_numeric(b)):
             output_text.append(numbers_table[b])
         
         else:
